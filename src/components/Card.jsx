@@ -26,7 +26,7 @@ const Card = ({ anime, onClick }) => {
   return (
     <div style={cardStyle} onClick={handleClick}>
       <img src={anime.images.jpg.image_url} alt="anime" style={imageStyle} />
-      <h1 style={{ fontSize: '16px' }}>{anime.title}</h1>
+      <h1 className='white' style={{ fontSize: '16px' }}>{anime.title}</h1>
     </div>
   );
 };
