@@ -3,7 +3,7 @@ import React from 'react';
 const Card = ({ anime, onClick }) => {
   const cardStyle = {
     border: '1px solid black',
-    borderRadius: '5px',
+    borderRadius: '10px',
     background: 'linear-gradient(180deg, rgba(0, 0, 255, 0.7) 0%, rgba(0, 0, 255, 0.3) 100%)',
     padding: '10px',
     marginBottom: '10px',
