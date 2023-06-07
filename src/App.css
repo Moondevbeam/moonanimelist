@@ -1,14 +1,7 @@
-body{
-  background-color: #121212;
-}
-
 .white{
-  color: white;
+    color: white;
 }
-
-.center{
-  text-align: center;
-}
-.app-container {
-  margin-top: 20px;
-}
+.carousel-container {
+    margin-right: 10px; /* Aggiungi il margine desiderato tra i caroselli */
+  }
+  

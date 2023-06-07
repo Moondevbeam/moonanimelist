@@ -1,55 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SearchBar from './SearchBar';
 import Card from './Card';
+import Sidebar from './SideBar';
 import AnimeDetailPage from './AnimeDetailPage';
-import '../styles/animesearch.css';
 
 function AnimeSearch() {
   const [searchValue, setSearchValue] = useState('');
   const [results, setResults] = useState([]);
   const [selectedAnime, setSelectedAnime] = useState(null);
-  const [typingTimeout, setTypingTimeout] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (searchValue !== '') {
-      clearTimeout(typingTimeout);
-
-      const timeout = setTimeout(() => {
-        searchAnime(searchValue);
-      }, 500);
-
-      setTypingTimeout(timeout);
-    } else {
-      // Effettua la richiesta API iniziale solo se il valore di ricerca è vuoto
-      if (results.length === 0 && !selectedAnime) {
-        const apiUrl = 'https://api.jikan.moe/v4/top/anime';
-
-        axios.get(apiUrl)
-          .then(response => {
-            setResults(response.data.data ?? []);
-          })
-          .catch(error => {
-            console.error('Si è verificato un errore durante la ricerca:', error);
-          });
+    const searchAnime = async (value) => {
+      try {
+        const apiUrl = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(value)}`;
+        const response = await axios.get(apiUrl);
+        const searchResults = response.data.data ?? [];
+        setResults(searchResults);
+        setError(null);
+      } catch (error) {
+        console.error('An error occurred during the search:', error);
+        setResults([]);
+        setError('An error occurred during the search. Please try again later.');
       }
-    }
-    // eslint-disable-next-line
-  },[searchValue, results.length, selectedAnime]);
+    };
+
+    const debounceTimer = setTimeout(() => {
+      searchAnime(searchValue);
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchValue]);
 
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);
-  };
-
-  const searchAnime = (value) => {
-    const apiUrl = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(value)}`;
-
-    axios.get(apiUrl)
-      .then(response => {
-        setResults(response.data.data ?? []);
-      })
-      .catch(error => {
-        console.error('Si è verificato un errore durante la ricerca:', error);
-      });
   };
 
   const handleCardClick = (anime) => {
@@ -61,30 +46,23 @@ function AnimeSearch() {
   };
 
   return (
-    <div className="container">
-      <div className="search-container">
-        <h1 className="title">moonAnimelist</h1>
-        <div className="input-container">
-          <input type="text" value={searchValue} onChange={handleInputChange} placeholder="Inserisci il nome dell'anime" className="search-input" />
-        </div>
-      </div>
-
-      <div className="results-container">
-        {results.length === 0 && !selectedAnime && (
-          <p>Nessun risultato trovato.</p>
-        )}
-
-        {results.length > 0 && !selectedAnime && (
-          <div className="cards-container">
-            {results.map(anime => (
+    <div className="bg-gray-900 min-h-screen">
+      <div className="container mx-auto px-4">
+        <SearchBar
+          value={searchValue}
+          onChange={handleInputChange}
+          placeholder="Search Anime..."
+        />
+        {selectedAnime ? (
+          <AnimeDetailPage anime={selectedAnime} goBack={handleGoBack} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {results.slice(0, 12).map((anime) => (
               <Card key={anime.id} anime={anime} onClick={handleCardClick} />
             ))}
           </div>
         )}
-
-        {selectedAnime && (
-          <AnimeDetailPage anime={selectedAnime} goBack={handleGoBack} />
-        )}
+        <Sidebar onItemClick={handleCardClick} />
       </div>
     </div>
   );
