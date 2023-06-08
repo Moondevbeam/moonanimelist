@@ -17,7 +17,7 @@ const Card = ({ anime, onClick }) => {
       {anime.images && anime.images.jpg && anime.images.jpg.image_url && (
         <div className="flex-shrink-0 w-16 h-24 md:w-24 md:h-32 rounded-lg mr-4">
           <img
-            src={anime.images.jpg.image_url}
+            src={anime.images.webp.image_url}
             alt="anime"
             className="object-cover w-full h-full rounded-lg"
           />

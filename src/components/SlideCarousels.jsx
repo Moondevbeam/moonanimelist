@@ -44,7 +44,7 @@ const SlideCarousels = ({ onItemClick }) => {
               onClick={() => onItemClick(anime)}
             >
               <img
-                src={anime.images.jpg.image_url}
+                src={anime.images.webp.image_url}
                 alt={anime.title}
                 className="d-block w-100 h-80 object-cover rounded"
               />
