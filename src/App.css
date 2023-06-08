@@ -5,3 +5,10 @@
     margin-right: 10px; /* Aggiungi il margine desiderato tra i caroselli */
   }
   
+  @media (max-width: 640px) {
+    .carousel-title {
+      font-size: 14px;
+      white-space: normal;
+    }
+  }
+  

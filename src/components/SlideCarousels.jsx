@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Sidebar = ({ onItemClick }) => {
+const SlideCarousels = ({ onItemClick }) => {
   const [animeData, setAnimeData] = useState({
     upcoming: [],
     airing: [],
@@ -33,7 +33,7 @@ const Sidebar = ({ onItemClick }) => {
   }, []);
 
   const renderCarousel = (animeList, title, carouselId) => (
-    <div className="w-full max-w-xs mb-4 carousel-container">
+    <div className="cursor-pointer w-full max-w-xs mb-4 carousel-container">
       <h2 className="text-2xl font-bold text-white mb-4 text-center">{title}</h2>
       <div id={carouselId} className="carousel slide d-flex" data-bs-ride="carousel">
         <div className="carousel-inner">
@@ -46,9 +46,9 @@ const Sidebar = ({ onItemClick }) => {
               <img
                 src={anime.images.jpg.image_url}
                 alt={anime.title}
-                className="d-block w-100 h-100 object-cover rounded"
+                className="d-block w-100 h-80 object-cover rounded"
               />
-              <div className="carousel-caption d-none d-md-block">
+              <div className="carousel-caption d-block">
                 <h5>{anime.title}</h5>
               </div>
             </div>
@@ -77,7 +77,7 @@ const Sidebar = ({ onItemClick }) => {
   );
 
   return (
-    <div className="sidebar p-4 flex flex-col md:flex-row justify-center items-center">
+    <div className="p-4 flex flex-col md:flex-row justify-center items-center">
       {renderCarousel(animeData.upcoming, 'Upcoming Anime', 'upcomingCarousel')}
       {renderCarousel(animeData.airing, 'Top Airing Anime', 'airingCarousel')}
       {renderCarousel(animeData.popularity, 'Top Popularity Anime', 'popularityCarousel')}
@@ -85,4 +85,4 @@ const Sidebar = ({ onItemClick }) => {
   );
 };
 
-export default Sidebar;
+export default SlideCarousels;
